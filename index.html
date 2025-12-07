@@ -1,22 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="uk">
 <head>
-  <meta charset="UTF-8" />
-  <title>Chronological Bible Tracker</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="./style/main.min.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Хронологічний трекер читання Біблії</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
+  <div class="container">
+    <header>
+      <h1>Хронологічний трекер читання Біблії</h1>
+      <a class="archive-link" href="archive.html">Архів нотаток</a>
+    </header>
 
-<h1>Chronological Bible Reading</h1>
+    <main>
+      <section id="today-view" class="today-view">
+        <!-- Today view rendered by script.js -->
+      </section>
 
-<!-- План -->
-<div id="plan"></div>
+      <section id="days-list" class="days-list">
+        <!-- Days list rendered by script.js -->
+      </section>
+    </main>
+  </div>
 
-</div>
-<script src="./js/plan.js"></script>
-<script src="./js/script.js"></script>
-
+  <script src="plan.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

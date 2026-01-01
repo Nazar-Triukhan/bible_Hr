@@ -1,4 +1,4 @@
-const START_DATE = "2025-01-01";
+const START_DATE = "2026-01-01";
 
 function getTodayDayNumber(startDate){
   const s = new Date(startDate + 'T00:00:00');
@@ -165,6 +165,12 @@ function renderDaysList(){
 
     const notesDiv = document.createElement('div');
     notesDiv.className = 'notes';
+    const noteHeader = document.createElement('h4');
+    noteHeader.style.margin = '0 0 8px 0';
+    noteHeader.style.fontSize = '13px';
+    noteHeader.style.color = '#666';
+    noteHeader.textContent = day.chapters.join(', ');
+    notesDiv.appendChild(noteHeader);
     const ta = document.createElement('textarea');
     ta.placeholder = `Нотатки для Дня ${day.day}`;
     ta.id = `note-area-${day.day}`;
@@ -196,19 +202,19 @@ function saveNoteForDay(dayNumber){
   const ta = document.getElementById(`note-area-${dayNumber}`);
   if(!ta) return;
   const text = ta.value.trim();
-  const noteObj = { text: text, timestamp: Date.now() };
+  const day = biblePlan.find(d=>d.day===dayNumber);
+  const chapters = day ? day.chapters.join(', ') : '';
+  const noteObj = { text: text, chapters: chapters, timestamp: Date.now() };
   const k = noteKey(dayNumber);
   saveData({[k]: noteObj});
   // small feedback: briefly change button text if available
   const btn = ta.nextElementSibling;
-    if(btn && btn.tagName === 'BUTTON'){
-      const old = btn.textContent;
-      btn.textContent = 'Збережено';
-      setTimeout(()=> btn.textContent = old, 800);
-    }
-}
-
-function loadNotesArchive(){
+  if(btn && btn.tagName === 'BUTTON'){
+    const old = btn.textContent;
+    btn.textContent = 'Збережено';
+    setTimeout(()=> btn.textContent = old, 800);
+  }
+}function loadNotesArchive(){
   const container = document.getElementById('notes-archive');
   if(!container) return;
   const notes = [];
@@ -219,7 +225,7 @@ function loadNotesArchive(){
         const val = JSON.parse(localStorage.getItem(key));
         if(val && val.timestamp){
           const dayNum = key.replace('note_day','');
-          notes.push({ key, day: dayNum, text: val.text || '', timestamp: val.timestamp });
+          notes.push({ key, day: dayNum, text: val.text || '', chapters: val.chapters || '', timestamp: val.timestamp });
         }
       }catch(e){}
     }
@@ -233,7 +239,7 @@ function loadNotesArchive(){
     const item = document.createElement('div');
     item.className = 'archive-item';
     const h = document.createElement('h4');
-    h.textContent = `День ${n.day} — ${formatDate(n.timestamp)}`;
+    h.textContent = `День ${n.day} — ${n.chapters || ''} — ${formatDate(n.timestamp)}`;
     const p = document.createElement('p');
     p.textContent = n.text || '';
     item.appendChild(h);
